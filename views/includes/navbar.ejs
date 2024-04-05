@@ -1,0 +1,51 @@
+
+  <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top mb-3 " id="navbar" >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/"><i class="fa-solid fa-compass"></i></a><span id="title">Wanderlust</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link "  href="/listings">Home</a>
+          <a class="nav-link" href="/listings">All Listings</a>
+        <% if (currUser) { %>
+          <a class="nav-link" href="/listings/new"><b><i style="color:darkgreen;">Add new Listing</i></b></a>
+        <% } %>
+          
+        </div>
+        <div class="navbar-nav ms-auto me-5 ">
+  
+       
+          <div class="container-fluid btn-group dropstart">
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+              <ul class="navbar-nav dropdown-menu-end dropdown-menu-lg-start">
+                <li class="nav-item dropdown">
+                  <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-user"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                 
+                    <% if (!currUser) { %>
+                    <li>  <a class="nav-link "  href="/signup"><b>Sign Up</b></a></li>
+                     <li> <a class="nav-link" href="/login"><b>Log in</b></a></li>
+                    <% } %>
+                      <% if (currUser) { %>
+                       <li> <a class="nav-link" style="padding: left 2px;" href="/logout"><b>Log out</b></a></li>
+                      <% } %>
+                    
+                  </ul>
+                </li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </nav>
+

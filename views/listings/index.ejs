@@ -1,0 +1,218 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+    
+#filters{
+    display: flex;
+    flex-wrap: wrap;
+    text-decoration: none !important;
+}
+.filter{
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 1rem;
+    opacity: 0.7;
+    text-decoration: none !important;
+}
+.filter a{
+    text-decoration: none !important;
+    color: black;
+}
+
+.filter a div:hover + p,
+.filter a div:active + p {
+    text-decoration: underline;
+}
+
+.filter a.clicked p {
+    text-decoration: underline;
+}
+
+
+.filter:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.tax-info{
+    display: none;
+}
+
+</style>
+
+<div id="filters" class="collapse navbar-collapse">
+    <div class="filter">
+        <a href="/listings/filter/rooms">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/trending">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/new">
+            <div><i class="fa-solid fa-key"></i></div>
+            <p>New</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/hilly">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Hilly</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/farms">
+            <div><i class="fa-solid fa-tractor"></i></div>
+            <p>Farms</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/beach">
+            <div><i class="fa-solid fa-umbrella-beach"></i></div>
+            <p>Beach</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/snowy">
+            <div><i class="fa-regular fa-snowflake"></i></div>
+            <p>Snowy</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/skiing">
+            <div><i class="fa-solid fa-person-skiing"></i></div>
+            <p>Skiing</p>
+        </a>
+    </div>
+    
+    <div class="filter">
+        <a href="/listings/filter/temple">
+            <div><i class="fa-solid fa-gopuram"></i></div>
+            <p>Temple</p>
+        </a>
+    </div>
+    
+<div class="form-check-reverse form-switch ms-auto ">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+    <label class="form-check-label" for="flexSwitchCheckDefault">Apply GST</label>
+  </div>
+</div>
+<body>
+    <div class="card-container mt-3"> <!-- Add card-container class here -->
+        <% for (let listing of list) { %>
+            <a href="/listings/<%= listing._id %>" class="listing_link">
+            <div class="card" style="width: 18rem;">
+                <img src="<%= listing.image.url %>" class="card-img-top" alt="...">
+                <div class="card-img-overlay"></div>
+                <div class="card-body">
+                    <p class="card-text"><%= listing.title %></p><br>
+                    <p class="card-text" id="listprice" style="white-space: nowrap;"> &#x20b9;<%= listing.price %>/night <i class="tax-info" style="color: darkgreen;">&nbsp;&nbsp;+18% GST</i></p>
+                   <br>
+                   
+                </div>
+            </div> 
+            </a>
+        <% } %>
+    </div>
+</body>
+<script>
+    let tax = document.getElementById("flexSwitchCheckDefault");
+ 
+tax.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    let price =document.getElementById("listprice");
+
+
+    for (let info of taxInfo) {
+        if (tax.checked) {
+            info.style.display = "inline";
+        } 
+        else {
+            
+            info.style.display = "none";
+
+        }
+    }
+});
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $(".filter a").click(function() {
+        $(".filter a").removeClass("clicked"); // Remove the class from all other links
+        $(this).addClass("clicked"); // Add the class to the clicked link
+    });
+});
+</script>
+<script>
+    // filters icon -----------------------------------
+const filters = document.querySelectorAll(".filter");
+// Function to apply styles based on the selected filter
+function applyStyles(selectedFilter) {
+	// Remove 'selected' class from all filters
+	filters.forEach((f) => f.classList.remove("selectedFilter"));
+	// Add 'selected' class to the clicked filter
+	const selectedElement = document.querySelector("." + selectedFilter);
+	if (window.location.pathname === "/listings") {
+		filters[0].classList.add("selectedFilter");
+		return;
+	}
+	if (selectedElement) {
+		selectedElement.classList.add("selectedFilter");
+	}
+}
+
+// Add click event listener to each filter
+filters.forEach((filter) => {
+	filter.addEventListener("click", function () {
+		const element = this.classList[1];
+		console.log(element);
+		// Store the selected filter in localStorage
+		localStorage.setItem("selectedFilter", element);
+		// Apply styles
+		applyStyles(element);
+	});
+});
+// On page load, check if a filter was previously selected and apply styles
+const storedFilter = localStorage.getItem("selectedFilter");
+if (storedFilter) {
+	applyStyles(storedFilter);
+}
+
+
+// filters slide button add-----------------------------------
+let filtersBox = document.querySelector("#filters");
+let buttonSlide = document.querySelectorAll("#slideButton");
+
+buttonSlide.forEach((button) => {
+	button.addEventListener("click", () => {
+		const direction = button.className == "left_img_button" ? -1 : 1;
+		const scrollImg = direction * (filtersBox.clientWidth - 100);
+		filtersBox.scrollBy({ left: scrollImg, behavior: "smooth" });
+	});
+});
+
+filtersBox.addEventListener("scroll", () => {
+		buttonSlide[0].style.display = filtersBox.scrollLeft <= 0 ? "none" : "flex"
+		buttonSlide[1].style.display = filtersBox.scrollLeft >= (filtersBox.scrollWidth-filtersBox.clientWidth-5) ? "none" : "flex"
+		console.log(filtersBox.scrollWidth)
+		console.log(filtersBox.scrollWidth-filtersBox.clientWidth)
+})
+</script>
+
+
+
