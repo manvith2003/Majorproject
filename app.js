@@ -15,13 +15,12 @@ const ejsMate = require("ejs-mate");
 const wrapAsync =require("./utils/wrapAsync.js");
 const ExpressError =require("./utils/ExpressError.js");
 const Joi = require('joi');
-
 const {listingSchema,reviewSchema}  =require("./models/schema.js");
 const Review = require("./models/review.js");
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const session = require("express-session");
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const passport =require("passport");
 const LocalStratergy =require("passport-local");
@@ -30,6 +29,7 @@ const {isLogged, saveRedirectUrl,isOwner,validateListing,validatereview, isAutho
 const multer  = require('multer');
 const {storage}=require("./cloudConfig.js");
 const upload = multer({ storage });
+
 
 const DB_URL = process.env.ATLAS_URL;
 
