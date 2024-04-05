@@ -49,7 +49,7 @@ main()
 
   const store = MongoStore.create({
     mongoUrl: DB_URL,
-    clientPromise,
+    
     crypto: {
       secret: process.env.SECRET,
     },
@@ -60,9 +60,7 @@ main()
     console.log("ERROR in MONGO SESSION STORE");
   });
 
-  store.on("error",()=>{
-    console.log("Error in mongo session",err);
-  });
+
 
   let sessionOption = {
      store,
