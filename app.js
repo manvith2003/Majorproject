@@ -31,10 +31,8 @@ const multer  = require('multer');
 const {storage}=require("./cloudConfig.js");
 const upload = multer({ storage });
 
+const DB_URL = process.env.ATLAS_URL;
 
-async function main() {
-  await mongoose.connect(process.env.ATLAS_URL);
-}
 main()
   .then((res) => {
     console.log("connected to db");
@@ -43,13 +41,21 @@ main()
     console.log(err);
   });
 
+  async function main() {
+    //   await mongoose.connect(MONGO_URL);
+    await mongoose.connect(DB_URL);
+  }
+
+
   const store = MongoStore.create({
-    mongoUrl: process.env.ATLAS_URL,
+    mongoUrl: DB_URL,
+    clientPromise,
     crypto: {
       secret: process.env.SECRET,
     },
     touchAfter: 24 * 3600,
   });
+  
   store.on("error", () => {
     console.log("ERROR in MONGO SESSION STORE");
   });
